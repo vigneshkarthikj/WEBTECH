@@ -1,0 +1,167 @@
+<html>
+<head>
+    <title>Scientific Calculator</title>
+    <style>
+        
+            border-radius: 10px;
+            width: 340px;
+        }
+
+        #display {
+            width: 100%;
+            height: 50px;
+            font-size: 20px;
+            margin-bottom: 10px;
+            text-align: right;
+            padding: 5px;
+            border-radius: 5px;
+            border: none;+
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+        }
+
+        .scientific {
+            display: none;
+            margin-bottom: 10px;
+        }
+
+        .scientific.active {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+        }
+
+        button {
+            height: 45px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .operator { background: orange; color: white; }
+        .clear { background: red; color: white; }
+        .mode { background: #555; color: white; }
+    </style>
+</head>
+<body>
+
+<div class="calculator">
+    <input type="text" id="display" disabled>
+
+    <button class="mode" onclick="toggleScientific()">Scientific Mode</button>
+
+    <!-- Scientific Buttons -->
+    <div class="scientific" id="scientificPanel">
+        <button onclick="calculateScientific('sin')">sin</button>
+        <button onclick="calculateScientific('cos')">cos</button>
+        <button onclick="calculateScientific('tan')">tan</button>
+        <button onclick="calculateScientific('sqrt')">√</button>
+
+        <button onclick="calculateScientific('log')">log</button>
+        <button onclick="calculateScientific('ln')">ln</button>
+        <button onclick="appendValue(Math.PI)">π</button>
+        <button onclick="appendValue('^')">^</button>
+    </div>
+
+    <!-- Basic Buttons -->
+    <div class="buttons">
+        <button onclick="clearDisplay()" class="clear">C</button>
+        <button onclick="appendValue('/') " class="operator">/</button>
+        <button onclick="appendValue('*')" class="operator">*</button>
+        <button onclick="deleteLast()">⌫</button>
+
+        <button onclick="appendValue('7')">7</button>
+        <button onclick="appendValue('8')">8</button>
+        <button onclick="appendValue('9')">9</button>
+        <button onclick="appendValue('-')" class="operator">-</button>
+
+        <button onclick="appendValue('4')">4</button>
+        <button onclick="appendValue('5')">5</button>
+        <button onclick="appendValue('6')">6</button>
+        <button onclick="appendValue('+')" class="operator">+</button>
+
+        <button onclick="appendValue('1')">1</button>
+        <button onclick="appendValue('2')">2</button>
+        <button onclick="appendValue('3')">3</button>
+        <button onclick="calculate()" class="operator">=</button>
+
+        <button onclick="appendValue('0')" style="grid-column: span 2;">0</button>
+        <button onclick="appendValue('.')">.</button>
+    </div>
+</div>
+
+<script>
+    function appendValue(value) {
+        document.getElementById("display").value += value;
+    }
+
+    function clearDisplay() {
+        document.getElementById("display").value = "";
+    }
+
+    function deleteLast() {
+        let display = document.getElementById("display");
+        display.value = display.value.slice(0, -1);
+    }
+
+    function calculate() {
+        try {
+            let expression = document.getElementById("display").value;
+
+            // Replace ^ with **
+            expression = expression.replace(/\^/g, "**");
+
+            let result = Function('"use strict";return (' + expression + ')')();
+            document.getElementById("display").value = result;
+        } catch {
+            alert("Invalid Expression");
+        }
+    }
+
+    function calculateScientific(type) {
+        let display = document.getElementById("display");
+        let value = parseFloat(display.value);
+
+        if (isNaN(value)) {
+            alert("Enter a number first");
+            return;
+        }
+
+        let result;
+
+        switch(type) {
+            case 'sin':
+                result = Math.sin(value * Math.PI / 180); // degree mode
+                break;
+            case 'cos':
+                result = Math.cos(value * Math.PI / 180);
+                break;
+            case 'tan':
+                result = Math.tan(value * Math.PI / 180);
+                break;
+            case 'sqrt':
+                result = Math.sqrt(value);
+                break;
+            case 'log':
+                result = Math.log10(value);
+                break;
+            case 'ln':
+                result = Math.log(value);
+                break;
+        }
+
+        display.value = result;
+    }
+
+    function toggleScientific() {
+        document.getElementById("scientificPanel").classList.toggle("active");
+    }
+</script>
+
+</body>
+</html>
