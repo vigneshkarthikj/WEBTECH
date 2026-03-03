@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Form with Copy Feature</title>
+
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: linear-gradient(to right, #4e73df, #9b59b6);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .container {
+        background: white;
+        padding: 25px;
+        width: 350px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    h2 {
+        text-align: center;
+    }
+
+    input, select, textarea {
+        width: 100%;
+        padding: 8px;
+        margin: 8px 0;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+
+    button {
+        width: 100%;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        margin-top: 10px;
+        cursor: pointer;
+        font-size: 15px;
+    }
+
+    .submit-btn {
+        background: linear-gradient(to right, #4e73df, #9b59b6);
+        color: white;
+    }
+
+    .copy-btn {
+        background: green;
+        color: white;
+    }
+
+    .output {
+        margin-top: 15px;
+        background: #f4f4f4;
+        padding: 10px;
+        border-radius: 5px;
+        white-space: pre-line;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>Contact Form</h2>
+
+    <form id="form">
+        <input type="text" id="name" placeholder="Enter Name" required>
+        <input type="email" id="email" placeholder="Enter Email" required>
+
+        <select id="gender">
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+        </select>
+
+        <textarea id="message" rows="3" placeholder="Enter Message"></textarea>
+
+        <button type="submit" class="submit-btn">Submit</button>
+    </form>
+
+    <div id="output" class="output"></div>
+
+    <button id="copyBtn" class="copy-btn">Copy Data</button>
+</div>
+
+<script>
+    const form = document.getElementById("form");
+    const output = document.getElementById("output");
+    const copyBtn = document.getElementById("copyBtn");
+
+    form.addEventListener("submit", function(e) {
+        e.preventDefault();
+
+        const name = document.getElementById("name").value;
+        const email = document.getElementById("email").value;
+        const gender = document.getElementById("gender").value;
+        const message = document.getElementById("message").value;
+
+        output.textContent =
+            "Name: " + name + "\n" +
+            "Email: " + email + "\n" +
+            "Gender: " + gender + "\n" +
+            "Message: " + message;
+    });
+
+    copyBtn.addEventListener("click", async function() {
+        try {
+            await navigator.clipboard.writeText(output.textContent);
+            copyBtn.textContent = "Copied!";
+            setTimeout(() => {
+                copyBtn.textContent = "Copy Data";
+            }, 2000);
+        } catch (err) {
+            alert("Failed to copy!");
+        }
+    });
+</script>
+
+</body>
+</html>
