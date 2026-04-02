@@ -1,0 +1,47 @@
+body{
+font-family: Arial;
+background:#f2f2f2;
+text-align:center;
+padding:20px;
+}
+
+table{
+border-collapse:collapse;
+margin:auto;
+width:60%;
+background:white;
+}
+
+th,td{
+border:1px solid #ccc;
+padding:10px;
+}
+
+th{
+background:#4CAF50;
+color:white;
+}
+
+.buttons{
+margin:20px;
+}
+
+button{
+padding:10px 15px;
+margin:5px;
+border:none;
+background:#4CAF50;
+color:white;
+cursor:pointer;
+border-radius:5px;
+}
+
+button:hover{
+background:#45a049;
+}
+
+#result{
+font-size:18px;
+font-weight:bold;
+margin-top:15px;
+}
