@@ -10,7 +10,11 @@
             margin: 0;
             padding: 0;
             font-family: Arial, sans-serif;
-            background: linear-gradient(to right, #1e3c72, #2a5298);
+
+            /* Jio Hotstar style dark background */
+            background: radial-gradient(circle at top, #0f2027, #000000 70%),
+                        linear-gradient(135deg, #0a0f2c, #1b1f4a, #000000);
+
             height: 100vh;
             color: white;
             text-align: center;
@@ -18,6 +22,9 @@
 
         h1 {
             margin-top: 50px;
+            font-size: 36px;
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px rgba(0, 150, 255, 0.7);
         }
 
         nav {
@@ -28,17 +35,18 @@
             display: inline-block;
             text-decoration: none;
             color: white;
-            background-color: rgba(0, 0, 0, 0.4);
+            background: linear-gradient(45deg, #141e30, #243b55);
             padding: 12px 25px;
             margin: 10px;
-            border-radius: 10px;
+            border-radius: 12px;
             font-size: 18px;
             transition: 0.3s;
         }
 
         a:hover {
-            background-color: white;
-            color: black;
+            background: linear-gradient(45deg, #00c6ff, #0072ff);
+            color: white;
+            transform: scale(1.05);
         }
     </style>
 </head>
@@ -54,7 +62,6 @@
         <a href="EXP4/INDEX.html">Experiment 4</a><br><br>
         <a href="EXP5/index.html">Experiment 5</a><br><br>
         <a href="EXP6/index.html">Experiment 6</a><br><br>
-
     </nav>
 
 </body>
