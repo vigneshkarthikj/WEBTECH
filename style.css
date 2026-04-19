@@ -1,0 +1,48 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #0b0b0f;
+    color: white;
+    text-align: center;
+}
+
+/* Title */
+h1 {
+    margin-top: 70px;
+    font-size: 40px;
+}
+
+/* Container */
+.container {
+    margin-top: 80px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 35px;
+}
+
+/* Circle buttons */
+.circle {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    text-decoration: none;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+
+    background: linear-gradient(135deg, #1e90ff, #6a11cb);
+
+    transition: 0.3s;
+}
+
+/* Hover effect */
+.circle:hover {
+    transform: scale(1.15);
+    background: linear-gradient(135deg, #00c6ff, #ff00cc);
+}

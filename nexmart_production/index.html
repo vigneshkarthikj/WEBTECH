@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NexMart — AI-Powered Premium Shopping</title>
+  <meta name="description" content="Discover curated products with AI-powered recommendations">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◈</text></svg>">
+</head>
+<body>
+
+<!-- ============================================
+     NAVBAR
+     ============================================ -->
+<nav class="navbar">
+  <div class="container">
+    <div class="logo">◈ Nex<span>Mart</span><span class="logo-dot">.</span></div>
+
+    <div class="nav-links">
+      <button class="nav-link active" data-page="shop"            onclick="showPage('shop')">Shop</button>
+
+      <button class="nav-link"        data-page="analytics"        onclick="showPage('analytics')">Analytics</button>
+      <button class="nav-link"        data-page="orders"           onclick="showPage('orders')">My Orders</button>
+    </div>
+
+    <div class="nav-right">
+      <button class="cart-btn" onclick="showPage('cart')">
+        🛒 Cart
+        <span class="cart-badge" id="cartBadge">0</span>
+      </button>
+      <button class="user-btn" id="userBtn">
+        <div class="avatar" id="navAvatar">👤</div>
+        <span id="navUserName">Sign In</span>
+      </button>
+      <button class="logout-btn" id="logoutBtn" style="display: none;" onclick="signOut()">
+        Log Out
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ============================================
+     MAIN CONTENT
+     ============================================ -->
+<div class="page-wrap">
+
+  <!-- ========== SHOP PAGE ========== -->
+  <div class="page active" id="page-shop">
+    <div class="container">
+
+      <div class="hero">
+        <div class="hero-label">AI-Curated Collection 2024</div>
+        <h1>Discover Products<br>Made for <em>You</em></h1>
+        <p class="hero-sub">Smart recommendations powered by your preferences. Shop the finest curated selection.</p>
+      </div>
+
+      <div class="search-section">
+        <div class="search-wrap">
+          <span class="search-icon">🔍</span>
+          <input
+            type="text"
+            class="search-input"
+            id="searchInput"
+            placeholder="Search products, brands, categories..."
+            oninput="handleSearch(this.value)"
+            autocomplete="off"
+          >
+          <div class="search-dropdown" id="searchDropdown"></div>
+        </div>
+      </div>
+
+      <div class="filter-bar">
+        <button class="filter-chip active" data-slug="all"         onclick="setFilter('all', this)">All</button>
+        <button class="filter-chip"        data-slug="electronics" onclick="setFilter('electronics', this)">⚡ Electronics</button>
+        <button class="filter-chip"        data-slug="gaming"      onclick="setFilter('gaming', this)">🎮 Gaming</button>
+        <button class="filter-chip"        data-slug="audio"       onclick="setFilter('audio', this)">🎧 Audio</button>
+        <button class="filter-chip"        data-slug="fashion"     onclick="setFilter('fashion', this)">👗 Fashion</button>
+        <button class="filter-chip"        data-slug="wearables"   onclick="setFilter('wearables', this)">⌚ Wearables</button>
+        <button class="filter-chip"        data-slug="home"        onclick="setFilter('home', this)">🏠 Home</button>
+        <select class="sort-select" onchange="setSort(this.value)">
+          <option value="views">Most Popular</option>
+          <option value="rating">Top Rated</option>
+          <option value="price_asc">Price: Low to High</option>
+          <option value="price_desc">Price: High to Low</option>
+          <option value="newest">Newest</option>
+        </select>
+      </div>
+
+      <div class="section-hdr">
+        <h2>Products</h2>
+        <span class="section-count" id="productCount"></span>
+      </div>
+
+      <div class="products-grid" id="productsGrid">
+        <div class="loading-wrap" style="grid-column:1/-1">
+          <div class="spinner"></div>
+          <div class="loading-text">Loading products...</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+
+  <!-- ========== CART PAGE ========== -->
+  <div class="page" id="page-cart">
+    <div class="container">
+      <div style="padding-top:2.5rem">
+        <div class="hero-label">Your Selection</div>
+        <h1 style="font-size:2rem;margin-bottom:2rem">Shopping Cart</h1>
+      </div>
+      <div class="cart-layout">
+        <div id="cartContent">
+          <div class="loading-wrap"><div class="spinner"></div></div>
+        </div>
+        <div id="cartSummaryPanel"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== ANALYTICS PAGE ========== -->
+  <div class="page" id="page-analytics">
+    <div class="container analytics-page">
+      <div class="hero-label">Store Intelligence</div>
+      <h1 style="font-size:2rem;margin-bottom:2rem">Analytics Dashboard</h1>
+
+      <div class="metrics-grid" id="analyticsMetrics">
+        <div class="loading-wrap" style="grid-column:1/-1"><div class="spinner"></div></div>
+      </div>
+
+      <div class="analytics-two-col">
+        <div class="chart-card">
+          <div class="chart-title">Most Viewed Products</div>
+          <div class="chart-sub">Ranked by total view count</div>
+          <div id="viewedChart"></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-title">Top Categories</div>
+          <div class="chart-sub">By total product views</div>
+          <div id="catChart"></div>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-title">Recent Orders</div>
+        <div class="chart-sub">Latest customer transactions</div>
+        <div id="recentOrdersList"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== ORDERS PAGE ========== -->
+  <div class="page" id="page-orders">
+    <div class="container orders-page">
+      <div class="hero-label">Purchase History</div>
+      <div style="display:flex;align-items:baseline;gap:1rem;margin-bottom:2rem">
+        <h1 style="font-size:2rem">My Orders</h1>
+        <span class="section-count" id="ordersCount"></span>
+      </div>
+      <div id="ordersList">
+        <div class="loading-wrap"><div class="spinner"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== AUTH PAGE ========== -->
+  <div class="page" id="page-auth">
+    <div class="auth-page">
+      <div class="auth-card">
+        <div class="auth-card-logo">◈ NexMart</div>
+        <h2 class="auth-title" id="authTitle">Welcome back</h2>
+        <p class="auth-sub" id="authSubtitle">Sign in to your NexMart account</p>
+
+        <div class="auth-field" id="nameField" style="display:none">
+          <label>Full Name</label>
+          <input type="text" id="authName" placeholder="Your full name">
+        </div>
+        <div class="auth-field">
+          <label>Email Address</label>
+          <input type="email" id="authEmail" placeholder="you@example.com">
+        </div>
+        <div class="auth-field">
+          <label>Password</label>
+          <input type="password" id="authPass" placeholder="••••••••" onkeydown="if(event.key==='Enter')submitAuth()">
+        </div>
+
+        <button class="auth-btn" id="authBtn" onclick="submitAuth()">Sign In</button>
+
+        <div class="auth-switch" id="authSwitchText">
+          New to NexMart? <span class="auth-switch-link" onclick="setAuthMode('register')">Create account</span>
+        </div>
+
+        <div class="demo-section">
+          <div class="demo-label">Quick Demo Login</div>
+          <div class="demo-chips">
+            <div class="demo-chip" onclick="loginDemo('Admin User','admin@nexmart.com');submitAuth()">👑 Admin</div>
+            <div class="demo-chip" onclick="document.getElementById('authEmail').value='alex@demo.com';document.getElementById('authPass').value='demo123'">Alex — Gamer</div>
+            <div class="demo-chip" onclick="document.getElementById('authEmail').value='priya@demo.com';document.getElementById('authPass').value='demo123'">Priya — Tech</div>
+          </div>
+          <div style="font-size:0.75rem;color:var(--muted);margin-top:0.75rem">
+            ℹ️ Demo users: register them first, or use the Admin account (password: <code style="color:var(--gold2)">admin123</code>). Admin password uses default bcrypt — update in DB if needed.
+          </div>
+        </div>
+
+        <div style="text-align:center;margin-top:1.5rem">
+          <button onclick="signOut()" style="font-size:0.8rem;color:var(--muted);background:none;border:none;cursor:pointer">Sign Out ↗</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end .page-wrap -->
+
+<!-- ============================================
+     PRODUCT MODAL
+     ============================================ -->
+<div class="modal-overlay" id="productModal">
+  <div class="modal">
+    <div class="modal-img" id="modalImg">⏳</div>
+    <div class="modal-body" id="modalBody">
+      <div class="loading-wrap"><div class="spinner"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================
+     TOAST NOTIFICATIONS
+     ============================================ -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- ============================================
+     SCRIPTS
+     ============================================ -->
+<script src="assets/js/app.js"></script>
+</body>
+</html>
